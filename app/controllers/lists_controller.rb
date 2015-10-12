@@ -47,6 +47,7 @@ class ListsController < ApplicationController
   private
 
   def list_params
+    byebug
     params.require(:list).permit(:name)
   end
 
