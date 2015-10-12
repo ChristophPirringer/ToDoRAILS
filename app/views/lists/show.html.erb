@@ -1,19 +1,35 @@
 <h1><%= @list.name %></h1>
 
-<% if @list.tasks.any?%>
-  <h4>Here are the tasks for this list</h4>
+<% if @list.tasks.not_done %>
+  <h4>Here are the tasks for this listyet to be done</h4>
   <ul>
-    <% @list.tasks.each do |t|%>
+    <% @list.tasks.not_done.each do |t|%>
     <li>
       <%= t.description %> |
-      <% if t.done %>
-        <p>Done!</p>
-      <% else %>
-        <p>Not Yet Done!</p>
-      <% end %>
 
       <%= link_to "Edit", edit_list_path(@list, t) %> |
       <%= link_to "Done", list_task_path(@list, t, :done => true), :data => {:method => :patch, :confirm => "are you sure?" } %>
+
+      <%= link_to "Delete", list_task_path(@list, t),
+                                :data => {:confirm => "you sure?",
+                                    :method => "delete"} %>
+    </li>
+    <% end %>
+  </ul>
+
+  <% else %>
+  <p>There are no tasks yet!</p>
+<% end %>
+
+<% if @list.tasks.done %>
+  <h4>Here are the tasks for this list already done</h4>
+  <ul>
+    <% @list.tasks.done.each do |t|%>
+    <li>
+      <%= t.description %> |
+
+      <%= link_to "Edit", edit_list_path(@list, t) %> |
+      <%= link_to "Undo", list_task_path(@list, t, :done => false), :data => {:method => :patch, :confirm => "are you sure?" } %>
 
       <%= link_to "Delete", list_task_path(@list, t),
                                 :data => {:confirm => "you sure?",

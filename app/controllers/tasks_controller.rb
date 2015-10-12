@@ -29,6 +29,9 @@ class TasksController < ApplicationController
     if params[:done] == "true"
       @task.done = true
       @task.save
+    elsif params[:done] == "false"
+      @task.done = false
+      @task.save
     end
     redirect_to list_path(@list)
   end
